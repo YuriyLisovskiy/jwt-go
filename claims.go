@@ -110,28 +110,34 @@ func NewClaims() *Claims {
 	return claims
 }
 
+// Contains returns if the claims map has given key.
+func (c *Claims) Contains(key string) bool {
+	_, ok := c.claims[key]
+	return ok
+}
+
 // Set sets the claim in string form.
-func (self *Claims) Set(key string, value interface{}) {
-	self.claims[key] = value
+func (c *Claims) Set(key string, value interface{}) {
+	c.claims[key] = value
 }
 
 // SetTime sets the claim given to the specified time.
-func (self *Claims) SetTime(key string, value time.Time) {
-	self.Set(key, value.Unix())
+func (c *Claims) SetTime(key string, value time.Time) {
+	c.Set(key, value.Unix())
 }
 
 // Get returns the claim in string form and returns an error if the specified claim doesn't exist.
-func (self Claims) Get(key string) (interface{}, error) {
-	result, ok := self.claims[key]
+func (c Claims) Get(key string) (interface{}, error) {
+	result, ok := c.claims[key]
 	if !ok {
 		return "", ErrClaimDoesNotExist
 	}
 	return result, nil
 }
 
-// GetTime attempts to return a claim as a time.
-func (self *Claims) GetString(key string) (string, error) {
-	raw, err := self.Get(key)
+// GetString attempts to return a claim as string.
+func (c *Claims) GetString(key string) (string, error) {
+	raw, err := c.Get(key)
 	if err != nil {
 		return "", err
 	}
@@ -142,21 +148,177 @@ func (self *Claims) GetString(key string) (string, error) {
 	return str, nil
 }
 
-// GetTime attempts to return a claim as a time.
-func (self *Claims) GetTime(key string) (time.Time, error) {
-	raw, err := self.Get(key)
+// GetFloat64 attempts to return a claim as float64.
+func (c *Claims) GetFloat64(key string) (float64, error) {
+	raw, err := c.Get(key)
 	if err != nil {
-		return time.Unix(0, 0), err
+		return 0, err
 	}
-	timeFloat, ok := raw.(int64)
+	val, ok := raw.(float64)
 	if !ok {
-		return time.Unix(0, 0), ErrClaimNotAnInt64
+		return 0, ErrClaimNotFloat64
 	}
-	return time.Unix(int64(timeFloat), 0), nil
+	return val, nil
 }
 
-// Contains returns if the claims map has given key.
-func (self *Claims) Contains(key string) bool {
-	_, ok := self.claims[key]
-	return ok
+// GetFloat32 attempts to return a claim as float32.
+func (c *Claims) GetFloat32(key string) (float32, error) {
+	raw, err := c.Get(key)
+	if err != nil {
+		return 0, err
+	}
+	val, ok := raw.(float32)
+	if !ok {
+		return 0, ErrClaimNotFloat32
+	}
+	return val, nil
+}
+
+// GetInt8 attempts to return a claim as int8.
+func (c *Claims) GetInt8(key string) (int8, error) {
+	raw, err := c.Get(key)
+	if err != nil {
+		return 0, err
+	}
+	val, ok := raw.(int8)
+	if !ok {
+		return 0, ErrClaimNotInt8
+	}
+	return val, nil
+}
+
+// GetUint8 attempts to return a claim as uint8.
+func (c *Claims) GetUint8(key string) (uint8, error) {
+	raw, err := c.Get(key)
+	if err != nil {
+		return 0, err
+	}
+	val, ok := raw.(uint8)
+	if !ok {
+		return 0, ErrClaimNotUint8
+	}
+	return val, nil
+}
+
+// GetInt16 attempts to return a claim as int16.
+func (c *Claims) GetInt16(key string) (int16, error) {
+	raw, err := c.Get(key)
+	if err != nil {
+		return 0, err
+	}
+	val, ok := raw.(int16)
+	if !ok {
+		return 0, ErrClaimNotInt16
+	}
+	return val, nil
+}
+
+// GetUint16 attempts to return a claim as uint16.
+func (c *Claims) GetUint16(key string) (uint16, error) {
+	raw, err := c.Get(key)
+	if err != nil {
+		return 0, err
+	}
+	val, ok := raw.(uint16)
+	if !ok {
+		return 0, ErrClaimNotUint16
+	}
+	return val, nil
+}
+
+// GetInt attempts to return a claim as int.
+func (c *Claims) GetInt(key string) (int, error) {
+	raw, err := c.Get(key)
+	if err != nil {
+		return 0, err
+	}
+	val, ok := raw.(int)
+	if !ok {
+		return 0, ErrClaimNotInt
+	}
+	return val, nil
+}
+
+// GetUint attempts to return a claim as uint.
+func (c *Claims) GetUint(key string) (uint, error) {
+	raw, err := c.Get(key)
+	if err != nil {
+		return 0, err
+	}
+	val, ok := raw.(uint)
+	if !ok {
+		return 0, ErrClaimNotUint
+	}
+	return val, nil
+}
+
+// GetInt32 attempts to return a claim as int32.
+func (c *Claims) GetInt32(key string) (int32, error) {
+	raw, err := c.Get(key)
+	if err != nil {
+		return 0, err
+	}
+	val, ok := raw.(int32)
+	if !ok {
+		return 0, ErrClaimNotInt32
+	}
+	return val, nil
+}
+
+// GetUint32 attempts to return a claim as uint32.
+func (c *Claims) GetUint32(key string) (uint32, error) {
+	raw, err := c.Get(key)
+	if err != nil {
+		return 0, err
+	}
+	val, ok := raw.(uint32)
+	if !ok {
+		return 0, ErrClaimNotUint32
+	}
+	return val, nil
+}
+
+// GetInt64 attempts to return a claim as int64.
+func (c *Claims) GetInt64(key string) (int64, error) {
+	raw, err := c.Get(key)
+	if err != nil {
+		return 0, err
+	}
+	val, ok := raw.(int64)
+	if !ok {
+		return 0, ErrClaimNotInt64
+	}
+	return val, nil
+}
+
+// GetUint64 attempts to return a claim as uint64.
+func (c *Claims) GetUint64(key string) (uint64, error) {
+	raw, err := c.Get(key)
+	if err != nil {
+		return 0, err
+	}
+	val, ok := raw.(uint64)
+	if !ok {
+		return 0, ErrClaimNotUint64
+	}
+	return val, nil
+}
+
+// GetBool attempts to return a claim as bool.
+func (c *Claims) GetBool(key string) (bool, error) {
+	raw, err := c.Get(key)
+	if err != nil {
+		return false, err
+	}
+	val, ok := raw.(bool)
+	if !ok {
+		return false, ErrClaimNotBool
+	}
+	return val, nil
+}
+
+// GetTime attempts to return a claim as a time.
+func (c *Claims) GetTime(key string) (time.Time, error) {
+	val, err := c.GetInt64(key)
+	return time.Unix(val, 0), err
 }

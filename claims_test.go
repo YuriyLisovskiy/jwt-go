@@ -89,7 +89,10 @@ func TestClaims_SetTime(t *testing.T) {
 	claims := NewClaims()
 	tm := time.Now()
 	claims.SetTime("exp", tm)
-	exp, _ := claims.GetTime("exp")
+	exp, err := claims.GetTime("exp")
+	if err != nil {
+		t.Errorf("jwt.TestClaims_SetTime: %s", err)
+	}
 	if exp.Unix() != tm.Unix() {
 		t.Errorf("jwt.TestClaims_SetTime: %d != %d", exp.Unix(), tm.Unix())
 	}
@@ -122,7 +125,52 @@ func TestClaims_GetTimeErr(t *testing.T) {
 	if err == nil {
 		t.Errorf("jwt.TestClaims_GetTimeErr: func does not return an error")
 	}
-	if err.Error() != ErrClaimNotAnInt64.Error() {
+	if err.Error() != ErrClaimNotInt64.Error() {
 		t.Errorf("jwt.TestClaims_GetTimeErr: func returns an invalid error")
+	}
+}
+
+func TestClaims_GetInt8(t *testing.T) {
+	claims := NewClaims()
+	claims.Set("int8_key", int8(5))
+	_, err := claims.GetInt8("int8_key")
+	if err != nil {
+		t.Errorf("jwt.TestClaims_GetInt8: %s", err)
+	}
+}
+
+func TestClaims_GetInt8Err(t *testing.T) {
+	claims := NewClaims()
+	claims.Set("int8_key", 1000)
+	_, err := claims.GetInt8("int8_key")
+	if err == nil {
+		t.Errorf("jwt.TestClaims_GetInt8Err: %s", err)
+	}
+}
+
+func TestClaims_GetBoolTrue(t *testing.T) {
+	claims := NewClaims()
+	claims.Set("bool_key", true)
+	_, err := claims.GetBool("bool_key")
+	if err != nil {
+		t.Errorf("jwt.TestClaims_GetBoolTrue: %s", err)
+	}
+}
+
+func TestClaims_GetBoolFalse(t *testing.T) {
+	claims := NewClaims()
+	claims.Set("bool_key", false)
+	_, err := claims.GetBool("bool_key")
+	if err != nil {
+		t.Errorf("jwt.TestClaims_GetBoolFalse: %s", err)
+	}
+}
+
+func TestClaims_GetBoolErr(t *testing.T) {
+	claims := NewClaims()
+	claims.Set("bool_key", 20)
+	_, err := claims.GetBool("bool_key")
+	if err == nil {
+		t.Errorf("jwt.TestClaims_GetBoolErr: %s", err)
 	}
 }
